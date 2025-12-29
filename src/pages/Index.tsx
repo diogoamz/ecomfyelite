@@ -1,12 +1,39 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import Header from "@/components/landing/Header";
+import HeroSection from "@/components/landing/HeroSection";
+import TargetAudienceSection from "@/components/landing/TargetAudienceSection";
+import ProblemSection from "@/components/landing/ProblemSection";
+import SolutionSection from "@/components/landing/SolutionSection";
+import IncludedSection from "@/components/landing/IncludedSection";
+import DifferentialsSection from "@/components/landing/DifferentialsSection";
+import MentorSection from "@/components/landing/MentorSection";
+import InvestmentSection from "@/components/landing/InvestmentSection";
+import ProcessSection from "@/components/landing/ProcessSection";
+import ApplicationForm from "@/components/landing/ApplicationForm";
+import Footer from "@/components/landing/Footer";
+import StarDecoration from "@/components/landing/StarDecoration";
 
 const Index = () => {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
+      {/* Star decorations */}
+      <StarDecoration />
+      
+      <Header />
+      
+      <main>
+        <HeroSection />
+        <TargetAudienceSection />
+        <ProblemSection />
+        <SolutionSection />
+        <IncludedSection />
+        <DifferentialsSection />
+        <MentorSection />
+        <InvestmentSection />
+        <ProcessSection />
+        <ApplicationForm />
+      </main>
+      
+      <Footer />
     </div>
   );
 };
