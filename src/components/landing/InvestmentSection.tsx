@@ -45,7 +45,7 @@ const InvestmentSection = () => {
               </div>
 
               <div className="py-8 border-t border-b border-border mb-8">
-                <p className="text-muted-foreground mb-2">Investimento único</p>
+                <p className="text-muted-foreground mb-2">Investimento único de</p>
                 <div className="flex items-baseline justify-center gap-1">
                   <span className="text-2xl font-medium">R$</span>
                   <span className="text-6xl md:text-7xl font-display font-bold gradient-text">9.997</span>
