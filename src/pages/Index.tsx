@@ -1,4 +1,3 @@
-import Header from "@/components/landing/Header";
 import HeroSection from "@/components/landing/HeroSection";
 import TargetAudienceSection from "@/components/landing/TargetAudienceSection";
 import ProblemSection from "@/components/landing/ProblemSection";
@@ -17,8 +16,6 @@ const Index = () => {
     <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
       {/* Star decorations */}
       <StarDecoration />
-      
-      <Header />
       
       <main>
         <HeroSection />
