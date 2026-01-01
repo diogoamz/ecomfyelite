@@ -1,25 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, X, Check } from "lucide-react";
-
 const InvestmentSection = () => {
-  const notIncluded = [
-    "Não é curso",
-    "Não é grupo",
-  ];
-
-  const included = [
-    "Mentoria individual",
-    "Alto nível de acompanhamento",
-    "Estratégia personalizada",
-    "Acesso direto ao mentor",
-  ];
-
+  const notIncluded = ["Não é curso", "Não é grupo"];
+  const included = ["Mentoria individual", "Alto nível de acompanhamento", "Estratégia personalizada", "Acesso direto ao mentor"];
   const scrollToForm = () => {
-    document.getElementById('application-form')?.scrollIntoView({ behavior: 'smooth' });
+    document.getElementById('application-form')?.scrollIntoView({
+      behavior: 'smooth'
+    });
   };
-
-  return (
-    <section className="py-20 relative">
+  return <section className="py-20 relative">
       <div className="container">
         <div className="max-w-3xl mx-auto text-center">
           <span className="inline-block px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
@@ -38,23 +27,19 @@ const InvestmentSection = () => {
                 <div className="flex-1">
                   <p className="text-sm text-muted-foreground mb-2">O que não é:</p>
                   <ul className="space-y-2">
-                    {notIncluded.map((item, index) => (
-                      <li key={index} className="flex items-center gap-2 text-muted-foreground">
+                    {notIncluded.map((item, index) => <li key={index} className="flex items-center gap-2 text-muted-foreground">
                         <X className="w-4 h-4 text-destructive" />
                         {item}
-                      </li>
-                    ))}
+                      </li>)}
                   </ul>
                 </div>
                 <div className="flex-1">
                   <p className="text-sm text-muted-foreground mb-2">O que é:</p>
                   <ul className="space-y-2">
-                    {included.map((item, index) => (
-                      <li key={index} className="flex items-center gap-2">
+                    {included.map((item, index) => <li key={index} className="flex items-center gap-2">
                         <Check className="w-4 h-4 text-green-500" />
                         {item}
-                      </li>
-                    ))}
+                      </li>)}
                   </ul>
                 </div>
               </div>
@@ -63,7 +48,7 @@ const InvestmentSection = () => {
                 <p className="text-muted-foreground mb-2">Investimento único</p>
                 <div className="flex items-baseline justify-center gap-1">
                   <span className="text-2xl font-medium">R$</span>
-                  <span className="text-6xl md:text-7xl font-display font-bold gradient-text">10.000</span>
+                  <span className="text-6xl md:text-7xl font-display font-bold gradient-text">9.997</span>
                 </div>
               </div>
 
@@ -75,8 +60,6 @@ const InvestmentSection = () => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default InvestmentSection;
