@@ -12,7 +12,7 @@ const MentorSection = () => {
     text: "Atuação direta com estruturação e escala"
   }, {
     icon: Cpu,
-    text: "Estratégias usando ferramentas modernas e IA"
+    text: "Estratégias usando ferramentas modernas"
   }];
   return <section className="py-20 relative bg-secondary/30">
       <div className="container">
