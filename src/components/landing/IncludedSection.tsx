@@ -32,8 +32,8 @@ const IncludedSection = () => {
                 key={index}
                 className="flex items-center gap-3 p-4 rounded-xl bg-card border border-border hover:border-primary/30 transition-all duration-300"
               >
-                <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
-                  <Check className="w-4 h-4 text-primary" />
+              <div className="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center shrink-0">
+                  <Check className="w-4 h-4 text-emerald-500" />
                 </div>
                 <span className="text-sm font-medium">{item}</span>
               </div>
