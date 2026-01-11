@@ -4,10 +4,24 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { ArrowRight, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { z } from "zod";
+
+// Schema de validação
+const applicationSchema = z.object({
+  name: z.string().trim().min(2, "Nome deve ter pelo menos 2 caracteres").max(100, "Nome muito longo"),
+  email: z.string().trim().email("E-mail inválido").max(255, "E-mail muito longo"),
+  phone: z.string().trim().min(10, "Telefone inválido").max(20, "Telefone muito longo"),
+  currentSituation: z.string().trim().min(10, "Descreva sua situação atual").max(1000, "Texto muito longo"),
+  goals: z.string().trim().min(10, "Descreva seus objetivos").max(1000, "Texto muito longo"),
+});
+
+// URL do webhook do Google Apps Script - substitua pela sua URL após criar o script
+const GOOGLE_SHEETS_WEBHOOK_URL = "YOUR_GOOGLE_APPS_SCRIPT_URL_HERE";
 
 const ApplicationForm = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -19,28 +33,86 @@ const ApplicationForm = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+    // Limpa o erro do campo quando o usuário começa a digitar
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: "" }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrors({});
+
+    // Validação com Zod
+    const result = applicationSchema.safeParse(formData);
+    if (!result.success) {
+      const fieldErrors: Record<string, string> = {};
+      result.error.errors.forEach(err => {
+        if (err.path[0]) {
+          fieldErrors[err.path[0] as string] = err.message;
+        }
+      });
+      setErrors(fieldErrors);
+      toast({
+        title: "Erro de validação",
+        description: "Por favor, corrija os campos destacados.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsSubmitting(true);
 
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    try {
+      // Verifica se a URL do webhook foi configurada
+      if (GOOGLE_SHEETS_WEBHOOK_URL === "YOUR_GOOGLE_APPS_SCRIPT_URL_HERE") {
+        // Modo de demonstração - simula o envio
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        toast({
+          title: "Modo de demonstração",
+          description: "Configure a URL do Google Apps Script para salvar os dados reais.",
+        });
+      } else {
+        // Envio real para o Google Sheets
+        await fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
+          method: "POST",
+          mode: "no-cors", // Necessário para Google Apps Script
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: result.data.name,
+            email: result.data.email,
+            phone: result.data.phone,
+            currentSituation: result.data.currentSituation,
+            goals: result.data.goals,
+          }),
+        });
 
-    toast({
-      title: "Aplicação enviada com sucesso!",
-      description: "Entraremos em contato em breve para a próxima etapa.",
-    });
+        toast({
+          title: "Aplicação enviada com sucesso!",
+          description: "Entraremos em contato em breve para a próxima etapa.",
+        });
+      }
 
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      currentSituation: "",
-      goals: "",
-    });
-    setIsSubmitting(false);
+      // Limpa o formulário após sucesso
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        currentSituation: "",
+        goals: "",
+      });
+    } catch (error) {
+      console.error("Erro ao enviar formulário:", error);
+      toast({
+        title: "Erro ao enviar",
+        description: "Ocorreu um erro. Por favor, tente novamente.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -70,8 +142,9 @@ const ApplicationForm = () => {
                   onChange={handleChange}
                   placeholder="Seu nome completo"
                   required
-                  className="bg-secondary border-border"
+                  className={`bg-secondary border-border ${errors.name ? "border-destructive" : ""}`}
                 />
+                {errors.name && <p className="text-xs text-destructive mt-1">{errors.name}</p>}
               </div>
 
               <div className="grid sm:grid-cols-2 gap-4">
@@ -87,8 +160,9 @@ const ApplicationForm = () => {
                     onChange={handleChange}
                     placeholder="seu@email.com"
                     required
-                    className="bg-secondary border-border"
+                    className={`bg-secondary border-border ${errors.email ? "border-destructive" : ""}`}
                   />
+                  {errors.email && <p className="text-xs text-destructive mt-1">{errors.email}</p>}
                 </div>
                 <div>
                   <label htmlFor="phone" className="block text-sm font-medium mb-2">
@@ -101,8 +175,9 @@ const ApplicationForm = () => {
                     onChange={handleChange}
                     placeholder="(11) 99999-9999"
                     required
-                    className="bg-secondary border-border"
+                    className={`bg-secondary border-border ${errors.phone ? "border-destructive" : ""}`}
                   />
+                  {errors.phone && <p className="text-xs text-destructive mt-1">{errors.phone}</p>}
                 </div>
               </div>
 
@@ -118,8 +193,9 @@ const ApplicationForm = () => {
                   placeholder="Descreva brevemente sua situação atual em marketplaces..."
                   required
                   rows={3}
-                  className="bg-secondary border-border resize-none"
+                  className={`bg-secondary border-border resize-none ${errors.currentSituation ? "border-destructive" : ""}`}
                 />
+                {errors.currentSituation && <p className="text-xs text-destructive mt-1">{errors.currentSituation}</p>}
               </div>
 
               <div>
@@ -134,8 +210,9 @@ const ApplicationForm = () => {
                   placeholder="O que você espera alcançar com a mentoria..."
                   required
                   rows={3}
-                  className="bg-secondary border-border resize-none"
+                  className={`bg-secondary border-border resize-none ${errors.goals ? "border-destructive" : ""}`}
                 />
+                {errors.goals && <p className="text-xs text-destructive mt-1">{errors.goals}</p>}
               </div>
             </div>
 
