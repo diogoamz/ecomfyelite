@@ -9,7 +9,7 @@ const HeroSection = () => {
       behavior: 'smooth'
     });
   };
-  const whatsappLink = "https://wa.me/message/Y7GIDCZIBUUCN1";
+  const whatsappLink = "https://wa.me/message/Y7GIDCZIBUUCN1?text=Olá! Tenho interesse na mentoria Ecomfy Elite e gostaria de tirar mais dúvidas...";
   return <section className="relative min-h-screen flex items-center justify-center overflow-hidden py-16">
       {/* Background glow effect */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-primary/5 blur-3xl" />
