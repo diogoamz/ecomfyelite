@@ -16,7 +16,7 @@ const applicationSchema = z.object({
 });
 
 // URL do webhook do Google Apps Script
-const GOOGLE_SHEETS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyImCJXhUyyQwD_AfZ5Cb5XGsZr1EKbyr_67tNqUBqfzHQ_PPOggm9enWlX-vr6dRs/exec";
+const GOOGLE_SHEETS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbwcZSqevyNNvF6Xs-UaVLfh8mXs9g8yxEbsXUz5hCjt6NoAcre1n_frMRqJN6SdRU8/exec";
 
 const ApplicationForm = () => {
   const { toast } = useToast();
