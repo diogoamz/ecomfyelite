@@ -15,8 +15,8 @@ const applicationSchema = z.object({
   goals: z.string().trim().min(10, "Descreva seus objetivos").max(1000, "Texto muito longo"),
 });
 
-// URL do webhook do Google Apps Script - substitua pela sua URL após criar o script
-const GOOGLE_SHEETS_WEBHOOK_URL = "YOUR_GOOGLE_APPS_SCRIPT_URL_HERE";
+// URL do webhook do Google Apps Script
+const GOOGLE_SHEETS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyImCJXhUyyQwD_AfZ5Cb5XGsZr1EKbyr_67tNqUBqfzHQ_PPOggm9enWlX-vr6dRs/exec";
 
 const ApplicationForm = () => {
   const { toast } = useToast();
@@ -64,36 +64,26 @@ const ApplicationForm = () => {
     setIsSubmitting(true);
 
     try {
-      // Verifica se a URL do webhook foi configurada
-      if (GOOGLE_SHEETS_WEBHOOK_URL === "YOUR_GOOGLE_APPS_SCRIPT_URL_HERE") {
-        // Modo de demonstração - simula o envio
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        toast({
-          title: "Modo de demonstração",
-          description: "Configure a URL do Google Apps Script para salvar os dados reais.",
-        });
-      } else {
-        // Envio real para o Google Sheets
-        await fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
-          method: "POST",
-          mode: "no-cors", // Necessário para Google Apps Script
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name: result.data.name,
-            email: result.data.email,
-            phone: result.data.phone,
-            currentSituation: result.data.currentSituation,
-            goals: result.data.goals,
-          }),
-        });
+      // Envio real para o Google Sheets
+      await fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
+        method: "POST",
+        mode: "no-cors", // Necessário para Google Apps Script
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: result.data.name,
+          email: result.data.email,
+          phone: result.data.phone,
+          currentSituation: result.data.currentSituation,
+          goals: result.data.goals,
+        }),
+      });
 
-        toast({
-          title: "Aplicação enviada com sucesso!",
-          description: "Entraremos em contato em breve para a próxima etapa.",
-        });
-      }
+      toast({
+        title: "Aplicação enviada com sucesso!",
+        description: "Entraremos em contato em breve para a próxima etapa.",
+      });
 
       // Limpa o formulário após sucesso
       setFormData({
